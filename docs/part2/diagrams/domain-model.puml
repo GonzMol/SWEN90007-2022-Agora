@@ -1,0 +1,66 @@
+@startuml domain-model
+
+Admin "1" -- "*" AuctionListing : monitors >
+Admin "1" -- "*" FixedPriceListing : monitors >
+Admin "1" -- "*" Seller: monitors >
+Admin "1" -- "*" Buyer: monitors >
+Admin "1" -- "*" Order : views >
+Buyer "1" -- "*" Order : places >
+Buyer "1" -- "*" Bid : submits >
+Seller "1..*" -- "*" SellerGroup : belongs to >
+SellerGroup "1" -- "*" FixedPriceListing : sells >
+SellerGroup "1" -- "*" AuctionListing : sells >
+FixedPriceListing "0..1" -- "1..*" Good : advertises >
+AuctionListing "0..1" -- "1" Good : advertises >
+AuctionListing "1" -r- "*" Bid : tracks >
+Order "0..1" -- "0..1" AuctionListing : contains >
+Order "*" -- "0..1" FixedPriceListing : contains >
+
+class Admin {
+}
+
+class Buyer {
+}
+
+class Seller {
+}
+
+class SellerGroup {
+}
+
+class Bid {
+    time
+    amount
+}
+
+class AuctionListing {
+    title
+    description
+    category
+    condition
+    dateListed
+    startPrice
+    startTime
+    endTime
+}
+
+class FixedPriceListing {
+    title
+    description
+    category
+    condition
+    dateListed
+    price
+    stock
+}
+
+class Good {
+}
+
+class Order {
+    date
+    quantity
+    shippingDetails
+}
+
+@enduml

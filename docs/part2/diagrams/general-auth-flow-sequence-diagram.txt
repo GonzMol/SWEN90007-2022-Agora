@@ -1,0 +1,49 @@
+title General Controller Authentication/Authorisation Flow
+
+participant Client
+participant RequestContext
+participant Controller
+participant SessionContext
+participant AuthenticationEnforcer
+participant UserMapper
+database Database
+
+Client-->>*RequestContext:<<create>>
+Client->Controller:GET method
+activate Client
+activate Controller
+Controller->RequestContext:get session context
+activate RequestContext
+RequestContext->SessionContext:get user ID
+activate SessionContext
+SessionContext-->>RequestContext:response
+deactivate SessionContext
+RequestContext-->>Controller:response
+deactivate RequestContext
+Controller->AuthenticationEnforcer:get user details
+activate AuthenticationEnforcer
+AuthenticationEnforcer->UserMapper:fetch
+activate UserMapper
+UserMapper->Database:fetch user details
+activate Database
+Database-->>UserMapper:respond
+deactivate Database
+UserMapper->UserMapper:create User object
+activate UserMapper
+space 
+deactivate UserMapper
+UserMapper-->>AuthenticationEnforcer:return User object
+deactivate UserMapper
+AuthenticationEnforcer-->>Controller:return User object
+deactivate AuthenticationEnforcer
+Controller->Controller:authorise user
+activate Controller
+space 
+deactivate Controller
+Controller->Controller:handle User request
+activate Controller
+space 
+deactivate Controller
+Controller-->>Client:respond
+deactivate Controller
+deactivate Client

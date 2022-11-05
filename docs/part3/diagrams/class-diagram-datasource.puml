@@ -1,0 +1,85 @@
+@startuml class-diagram-datasource
+skinparam classAttributeIconSize 0
+
+package datasource #DDDDDD {
+    DB <.. BidMapper
+    DB <.. ListingMapper
+    DB <.. OrderMapper
+    DB <.. ShippingDetailsMapper
+    DB <.. UserMapper
+    ListingMapper ..> UserMapper
+    ListingMapper ..> BidMapper
+    OrderMapper ..> UserMapper
+    OrderMapper ..> ListingMapper
+    OrderMapper ..> ShippingDetailsMapper
+    UserMapper ..> BidMapper
+    UserMapper ..> ShippingDetailsMapper
+}
+
+class DB {
+    - {static} url : String
+    - {static} user : String
+    - {static} password : String
+    + {static} connect() : Connection
+}
+
+class BidMapper {
+    + {static} insert(bid: Bid, listingId: UUID) : int
+    + {static} insert(bid: Bid, listingId: UUID, conn: Connection) : int
+    + {static} fetchWithListingId(listingId: UUID) : ArrayList<Bid>
+}
+
+class ListingMapper {
+    + {static} throwConcurrencyException(listing: Listing) : void
+    + {static} insert(listing: Listing) : int
+    + {static} insert(listing: Listing, conn: Connection) : int
+    + {static} update(listing: Listing) : int
+    + {static} update(listing: Listing, conn: Connection) : int
+    + {static} fetch(id: UUID) : Listing
+    + {static} fetch(id: UUID, forUpdate: boolean, conn: Connection) : Listing
+    + {static} fetchAll(activeOnly: boolean) : ArrayList<Listing>
+    + {static} fetchWithSellerId(sellerId: UUID, activeOnly: boolean) : ArrayList<Listing>
+    + {static} insertCoSeller(userId: UUID, listingId: UUID) : int
+    + {static} insertCoSeller(userId: UUID, listingId: UUID, conn: Connection) : int
+    + {static} fetchCoSellerWithListingId(listingId: UUID) : ArrayList<StandardUser>
+    + {static} deleteCoSeller(userId: UUID, listingId: UUID) : int
+    + {static} deleteCoSeller(userId: UUID, listingId: UUID, conn: Connection) : int
+}
+
+class OrderMapper {
+    + {static} throwConcurrencyException(order: Order) : void
+    + {static} insert(order: Order) : int
+    + {static} insert(order: Order, conn: Connection) : int
+    + {static} update(order: Order) : int
+    + {static} update(order: Order, conn: Connection) : int
+    + {static} fetch(id: UUID) : Order
+    + {static} fetch(id: UUID, forUpdate: boolean, conn: Connection) : Order
+    + {static} fetchAll() : ArrayList<Order>
+    + {static} fetchWithBuyerId(buyerId: UUID) : ArrayList<Order>
+    + {static} fetchWithSellerId(sellerId: UUID) : ArrayList<Order>
+}
+
+class ShippingDetailsMapper {
+    + {static} insert(shippingDetails: ShippingDetails) : int
+    + {static} insert(shippingDetails: ShippingDetails, conn: Connection) : int
+    + {static} update(shippingDetails: ShippingDetails) : int
+    + {static} update(shippingDetails: ShippingDetails, conn: Connection) : int
+    + {static} fetch(id: UUID) : ShippingDetails
+}
+
+class UserMapper {
+    + {static} insert(user: User) : int
+    + {static} update(user: User) : int
+    + {static} update(user: User, conn: Connection) : int
+    + {static} fetch(id: UUID) : User
+    + {static} fetch(id: UUID, forUpdate: boolean, conn: Connection) : User
+    + {static} fetchPopulated(id: UUID) : User
+    + {static} fetchAllStandardUsers() : ArrayList<StandardUser>
+    + {static} fetchAdmin() : Admin
+    + {static} fetchWithEmail(email: String) : User
+    + {static} fetchWithEmail(email: String, conn: Connection) : User
+    + {static} fetchAllEmails(activeOnly: boolean, nonAdmin: boolean) : ArrayList<String>
+    + {static} fetchAllUsernames() : ArrayList<String>
+}
+
+@enduml

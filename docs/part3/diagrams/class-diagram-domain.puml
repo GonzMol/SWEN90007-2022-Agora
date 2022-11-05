@@ -1,0 +1,100 @@
+@startuml class-diagram-domain
+skinparam classAttributeIconSize 0
+
+package domain #DDDDDD {
+    User <|-- Admin
+    User <|-- StandardUser
+    StandardUser *--> ShippingDetails : shippingDetails
+    Listing *--> Category : category
+    Listing *--> Condition : condition
+    Listing o--> StandardUser : owner
+    Listing o-- StandardUser : coSellers
+    Listing <|-- AuctionListing 
+    Listing <|-- FixedPriceListing
+    AuctionListing *-- Bid : bids
+    Bid o--> StandardUser : user
+    Order o--> StandardUser : buyer
+    Order o--> Listing : listing
+    Order *--> ShippingDetails : shippingDetails
+}
+
+abstract class User {
+    - id : UUID
+    - username : String
+    - email : String
+    - passHash : String
+}
+
+class Admin {
+}
+
+class StandardUser {
+    - isActive : boolean
+}
+
+class ShippingDetails {
+    - id : UUID
+    - firstName : String
+    - lastName : String
+    - phoneNumber : String
+    - country : String
+    - street : String
+    - city : String
+    - state : String
+    - postcode : String
+}
+
+abstract class Listing {
+    - id : UUID
+    - isActive : boolean
+    - dateListed : OffsetDateTime
+    - title : String
+    - description : String
+    - version : int
+    + load() : void
+}
+
+class AuctionListing {
+    - startPrice : BigDecimal
+    - startTime : OffsetDateTime
+    - endTime : OffsetDateTime
+    + getHighestBid() : Bid
+}
+
+class FixedPriceListing {
+    - price : BigDecimal
+    - stock : int
+}
+
+enum Category {
+    ELECTRONICS
+    HOME_AND_GARDEN
+    CLOTHING_AND_ACCESSORIES
+    ENTERTAINMENT
+    HEALTH_AND_BEAUTY
+    SPORTS
+    TOYS
+    PETS
+    OTHER
+}
+
+enum Condition {
+    NEW
+    USED
+}
+
+class Bid {
+    - id : UUID
+    - time : OffsetDateTime
+    - amount : BigDecimal
+}
+
+class Order {
+    - id : UUID
+    - isCancelled : boolean
+    - date : OffsetDateTime
+    - quantity : int
+    - version : int
+}
+
+@enduml

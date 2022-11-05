@@ -1,0 +1,31 @@
+DATE: 11-10-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+MJ: I think I've finished created the optimistic locking, but I have an error - updating seems to not work?
+DB: might be because you dropped your table to insert the new columns - there's no data to update
+CB: I've finished the mapper update to allow passing in a connection optionally
+GM: so when, for example, creating a Bid, we create a connection and pass it throught to all the mapper calls, and close at the end of the 
+CB: I've realised something as well - if we're only fetching data without updating, we don't need to put a read lock on it
+CB: I've updated the unit of work, though I'll need to ask if it's fine to have one UoW for different use cases or not
+CB: also - from the feedback, we don't need a co-seller mapper
+GM: how would we separate the co-sellers then?
+CB: I assumed he meant that we just have the listing mapper handle it, but I'm not sure how exactly
+GM: might not be worth the trouble changing
+CB: I am wondering if it is a concurrency issue; but it shouldn't be since only the owner can remove co-sellers
+DB: the admin could remove another user who is a co-seller; that could be an issue with concurrency
+MJ: or someone else editing the listing details, same issue
+CB: maybe updating co-sellers should increment the listing version as well
+MJ: what should I do now?
+DB: we still need a testing plan; can you do that?
+CB: there's templates for writing tests in the template report, you can follow them to design tests
+MJ: can I use JMeter?
+CB: yeah, you should be able to follow on from the lectures
+CB: anyone got questions for Luke?
+DB: apart from asking about the lost marks for the class diagram?
+CB: there's also asking about whether the Unit of Work can do multiple things, and whether it's okay to make DB connections in the controllers

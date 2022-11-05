@@ -1,0 +1,48 @@
+title Login Authentication Flow
+
+participant Client
+participant RequestContext
+participant LoginController
+participant SessionContext
+participant AuthenticationEnforcer
+participant AdminMapper
+database Database
+
+Client-->>*RequestContext:<<create>>
+activate Client
+Client->LoginController:login (POST method)
+activate LoginController
+LoginController->RequestContext:getCredentials
+activate RequestContext
+RequestContext-->>LoginController:return email, password
+deactivate RequestContext
+LoginController->AuthenticationEnforcer:getUserByEmail
+activate AuthenticationEnforcer
+AuthenticationEnforcer->AdminMapper:fetchWithEmail
+activate AdminMapper
+AdminMapper->Database:retrieve user data
+Database-->>AdminMapper:response
+AdminMapper->AdminMapper:create Admin object
+activate AdminMapper
+space
+deactivate AdminMapper
+AdminMapper-->>AuthenticationEnforcer:return new Admin object
+deactivate AdminMapper
+AuthenticationEnforcer-->>LoginController: return new Admin object
+deactivate AuthenticationEnforcer
+LoginController->AuthenticationEnforcer:hash password and validate with Admin object
+activate AuthenticationEnforcer
+AuthenticationEnforcer-->>LoginController:return hashed password
+deactivate AuthenticationEnforcer
+LoginController->AuthenticationEnforcer:validate hashed password
+activate AuthenticationEnforcer
+AuthenticationEnforcer-->>LoginController:respond
+deactivate AuthenticationEnforcer
+LoginController-->>*SessionContext:<<create>>
+LoginController->SessionContext:store Admin UUID
+activate SessionContext
+SessionContext-->>LoginController:return session context ID
+deactivate SessionContext
+LoginController-->>Client:return session context ID and redirect
+deactivate LoginController
+deactivate Client

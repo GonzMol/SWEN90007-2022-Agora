@@ -1,0 +1,57 @@
+DATE: 23-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+CB: guess we'll go through the feedback and come up with some questions
+CB: Eduardo indicated that they would provide us with 'suitable' use cases/domain model, is that available?
+DB: could be made available after tomorrow's lecture
+CB: use of extends not right - base case should be complete in its own right - fair enough
+CB: use case should document end goal, not individual step (e.g. search good over search listing)
+GM: so would all searching be a single use case? rather than individual?
+CB: might be that we were supposed to describe alternate workflows within single use cases, as in the template
+CB: system behaviour might have been good to see, e.g. when resetting details
+CB: use case 5 didn't need to be broken down; "manage account" could have been one use case with all features
+GM: did we need to be including technical details, e.g. database access/manipulation?
+CB: I think we only didn't need to include in the domain model
+MW: didn't think we needed to include in the use case either, per discussion with Luke
+CB: I wouldn't have thought that detail would be necessary in use cases
+GM: I get what's meant by use cases needing to be from the perspective of the user, it's a fair criticism
+CB: we separated cases because of discrepancies, and thought we were supposed to only include basic flows (not alternates)
+GM: I guess they were just after "create listing", without specifying auction/fixed-price?
+CB: they might have wanted that in the description
+GM: guess that's the same for everything else
+MW: modifying order as a buyer and a seller should be different, not the same use case, since they're too different
+CB: seems very different from what we've been taught in the other subject, where preconditions would be different use cases
+GM: if this is too granular, when do we specify that detail?
+CB: we're supposed to flesh out use cases for part 2, and make them the fully-dressed style
+CB: do we even need a use case diagram for part 2? can't find it in the description
+DB: it's described in the specification appendices; we should have documents and also include in the checklist
+MW: there's also a bit of description in part 2
+CB: it's talking about patterns? guess we extend to tie into patterns for part 2
+CB: entering checkout details (in case 26) has been called out for not needing payment details, but we haven't included them (in case 27)
+MW: we should ask about this one; otherwise we need to specify how the user checks out after the auction
+CB: without post-auction checkout, user checkout details would need to be stored in the bid - we can then auto-update when a new bid is made, to include the previous details
+GM: that seems the simplest way to implement
+CB: maybe we should ask Luke what he recommends; to store with the customer account, or enter the details whenever they make a bid
+CB: not deleting records - fair criticism, we can mark as inactive instead
+GM: perhaps our wording was poor
+CB: based on the feedback from earlier, perhaps we should be marking as 'inactive' in the database
+GM: still strange that we're mentioning the database in the use cases, we should ask if that was the expectation
+CB: I think we lost marks on the domain model description due to our errors in the model itself
+DB: seems a bit unfair; makes the marks on the description arbitrary?
+CB: maybe account details could have been included directly in Admin and User, even though they're duplicate fields
+CB: same case with listing details for the two listing types, and checkout details in order
+CB: he doesn't like us including Status, thinks it would be too complicated, even though it's real-world accurate
+MW: I thought that was what was wanted? to be realistic?
+CB: but if we want orders to be modifiable, including this is warranted, to prevent editing even after delivery of a good?
+MW: I think they probably want a basic, working system; doesn't need fully-fleshed out features
+CB: we could just let it be, and have an order be modifiable even years later
+CB: but orders need to be cancelable, so we would need status? unless we flag as inactive, same as Listings
+MW: we should definitely raise this with him; maybe we make it so the order status changes automatically rather than being updated by the user
+GM: wouldn't this also be using the same status system? just with slightly different implementation?
+DB: probably best to just ask about all of our issues

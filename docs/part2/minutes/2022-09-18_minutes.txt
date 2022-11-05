@@ -1,0 +1,20 @@
+DATE: 18-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+DB: I think it would be better if search filtering was done by the mapper
+CB: we have the choice of filtering in the mapper or in the controller
+DB: it's probably more efficient to filter in the query, though I have filtering in the controller
+CB: might not be worth the effort, given how few users and listings we'll realistically have
+CB: lazy loading and unit of work are just about done, UoW can cover order creation
+MW: I'll work through getting the pages done
+GM: the mappers should be just about done too
+DB: it might be helpful if we can filter by active users, like by adding a boolean parameter to some mapper functions
+GM: sure, can do
+MW: do we need to do another domain model diagram for the report? I think it mentions it
+DB: we also need to update our use cases for the checklist

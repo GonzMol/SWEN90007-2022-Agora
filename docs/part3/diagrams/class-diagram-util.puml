@@ -1,0 +1,45 @@
+@startuml class-diagram-util
+skinparam classAttributeIconSize 0
+
+package util #DDDDDD {
+    
+    class AuthenticationEnforcer {
+        + {static} getUserFromSession(request: HttpServletRequest) : User
+        + {static} getUserFromSession(request: HttpServletRequest, conn: Connection) : User
+        + {static} hashPassword(password: String) : String
+        + {static} getEncoder() : Pbkdf2PasswordEncoder
+        + {static} checkPasswordMatchesHash(password: String, hash: String) : boolean
+    }
+
+    ServletContextListener <|.. BackgroundAuctionManager
+    BackgroundAuctionManager ..> UnitOfWork
+}
+
+interface ServletContextListener {
+    + void contextInitialized(event : ServletContextEvent) : void
+    + void contextDestroyed(event : ServletContextEvent) : void
+}
+
+class BackgroundAuctionManager {
+    - {static} executor : ScheduledExecutorService
+    - {static} schedule : HashMap<UUID, ScheduledFuture<?>>
+    - loadExistingAuctions() : void
+    + {static} newAuction(auctionListing: AuctionListing) : void
+    + {static} updateAuction(auctionListing: AuctionListing) : void
+    - {static} endAuction(auctionListingId: UUID) : void
+    - {static} endAuction(auctionListing: AuctionListing) : void
+}
+
+class UnitOfWork {
+    - {static} current : ThreadLocal<UnitOfWork>
+    - newObjects : List<Object>
+    - dirtyObjects : List<Object>
+    - deletedObjects : List<Object>
+    + {static} newCurrent() : void
+    + registerNew(obj: Object) : void
+    + registerDirty(obj: Object) : void
+    + registerDeleted(obj: Object) : void
+    + commit() : void
+}
+
+@enduml

@@ -1,0 +1,36 @@
+DATE: 17-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+CB: should we get started on a class diagram? based on our domain model
+MW: sure
+CB: we can use PlantUML again, and create a docs branch from dev to put our documentation updates
+CB: one design decision - a parent user class, or we could have a single user class with a variable incicating their role
+DB: probably better to do the first since they have basically no overlap outside of authorisation
+CB: those kinds of methods might not be in the user classes though, they might be on the other classes and accessed by user
+GM: what's in the account details then
+MW: user name, email, password
+GM: so address etc., where is that stored?
+MW: in checkout details object
+MW: would admin have a username?
+CB: it would probably just be 'admin'
+MW: we can have the Listing as a parent object, extended by Fixed Price and Auction
+(Gonzalo needed to leave the meeting at this point)
+CB: should we keep checkout details separate, or put into Order?
+MW: that would mean asking for checkout details every time yeah?
+CB: we can have separate checkout details which the order references
+DB: what if a user puts checkout details in one order, but then edits the details for a second order? what happens to the details on the first?
+MW: what if we store checkout details elsewhere, but have the option to use custom details instead per order?
+CB: I'm also trying to think how this could affect e.g. Lazy Loading
+MW: we could just create a new checkout details instance when we update the details?
+CB: yeah, we can just check if the details are the same as one already created or if they're new and create a new object and reference it
+CB: should we have references to Listings stored as an array in the User class, or store the User reference in the Listing class?
+MW: I think the latter
+CB: we'd need an array of Users in the Listing since there can be multiple sellers
+DB: could we have both options?
+CB: there will probably be fewer Users per Listing than vice versa

@@ -1,0 +1,97 @@
+@startuml domain-model
+
+Admin "0..1" -- "1" accountDetails : provides >
+Admin "1" -- "*" User : views >
+Admin "1" -- "*" AuctionListing : manages >
+Admin "1" -- "*" FixedPriceListing : manages >
+Admin "1" -- "*" Order : views >
+User "0..1" -- "1" accountDetails : provides >
+User "1..*" -- "*" AuctionListing : seller <
+User "1..*" -- "*" FixedPriceListing : seller <
+User "1" -l- "*" Bid : placed by <
+AuctionListing "0..1" -l- "1" ListingDetails : described by >
+AuctionListing "1" -u- "*" Bid : tracks >
+FixedPriceListing "0..1" -d- "1" ListingDetails : described by >
+ListingDetails "*" -- "1" Category : belongs to >
+ListingDetails "*" -u- "1" Condition : declared as >
+Order "*" -- "1" Status : currently >
+Order "0..1" -l- "0..1" AuctionListing : contains >
+Order "0..1" -l- "0..1" FixedPriceListing : contains >
+Order "*" -u- "1" User : buyer >
+Order "1..*" -r- "1" CheckoutDetails : provided for <
+
+enum Category {
+    ELECTRONICS
+    HOME_AND_GARDEN
+    CLOTHING_AND_ACCESSORIES
+    ENTERTAINMENT
+    HEALTH_AND_BEAUTY
+    SPORTS
+    TOYS
+    PETS
+    OTHER
+}
+
+enum Condition {
+    NEW
+    USED
+}
+
+enum Status {
+    PENDING
+    COMPLETE
+    CANCELLED
+}
+
+class accountDetails {
+    username
+    email
+    password
+}
+
+class Admin {
+}
+
+class User {
+}
+
+class Bid {
+    amount
+}
+
+class AuctionListing {
+    startingPrice
+    startTime
+    endTime
+}
+
+class FixedPriceListing {
+    price
+    stock
+}
+
+class ListingDetails {
+    title
+    description
+    location
+    dateListed
+}
+
+class Order {
+    date
+    time
+    quantity
+}
+
+class CheckoutDetails {
+    firstName
+    lastName
+    phoneNumber
+    country
+    street
+    city
+    state
+    postcode
+}
+
+@enduml

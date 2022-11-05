@@ -1,0 +1,4 @@
+Label,# Samples,Average,Median,90% Line,95% Line,99% Line,Min,Max,Error %,Throughput,Received KB/sec,Sent KB/sec
+/all-accounts,500,58,58,61,63,66,55,92,0.000%,16.63894,4106.92,24.39
+Debug Sampler,500,0,0,0,1,1,0,2,0.000%,16.67334,14.78,0.00
+TOTAL,1000,29,2,60,61,64,0,92,0.000%,33.27676,4121.53,24.39

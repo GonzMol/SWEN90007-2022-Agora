@@ -1,0 +1,37 @@
+DATE: 12-10-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+DB: our lost marks for class diagram?
+LR: needed to be a system-wide class diagram (including controllers and mappers, not just the domain)
+MW: difference between setup and predconditions?
+LR: setup would be initialising objects etc., preconditions is what's true at the time of the test
+MW: we brainstormed concurrency issues initially
+LR: yeah, one way to do it is to find concurrency issues by use case
+LR: for testing, come up with a strategy; e.g. try to use boundary tests like in SST
+CB: is it bad practice to use one UoW to handle multiple different transactions with different use cases
+LR: that's ordinary - not sure how you'd change handling commits between different UoWs anyway
+CB: there's a bit more logic in our deletion use cases, which we want to always go through
+LR: in terms of upkeep, I'd say keep as one object, even if it requires more logic to get working
+CB: is it okay to create database connections in the controllers, for some transactions?
+LR: I think it's fine so long as you still have the DB class; though couldn't you just include it with Unit of Work
+CB: we have it with the unit of work; it's more if there's a transaction that doesn't use Unit of Work
+GM: we have a use case for what happens when two bids occur simultaneously
+CB: we want to fetch the listing, lock it, check if the bid is higher, update and commit
+LR: I think that can go into unit of work
+CB: we need to read outside the unit of work (with locking)
+LR: then just make a mapper function to place a bid
+DB: a lot of our transaction logic is in the controllers
+LR: then keep in the controllers
+CB: you've given us feedback that our co-seller mapper isn't needed
+LR: co-sellers aren't accessed outside of the context of a listing (always fetched with the listing)
+CB: so then the listing mapper can update the co-seller table directly?
+LR: yeah, that's fine
+CB: Maria said we are expected to identify about 5 concurrency issues; we've found about fifteen
+LR: that's better - 5 would be a minimum
+LR: tip - if you can handle concurrency with the database itself then do so, and mention in the report

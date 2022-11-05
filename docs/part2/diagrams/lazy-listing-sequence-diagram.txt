@@ -1,0 +1,47 @@
+participant "ListingMapper" as lm
+participant "lazyFixed[i]: FixedPriceListing" as f
+participant "fixed: FixedPriceListing" as f2
+participant "lazyAuction[i]: AuctionListing" as a
+database "database" as db
+
+[-> lm : fetchAll()
+activate lm
+lm->lm : result = new ArrayList<>()
+lm->db : resultSet = SELECT * FROM listing
+activate db
+space
+deactivate db
+loop while resultSet.next()
+alt resultSet.getString("type").equals("FIXED")
+lm-->*f : <<create>>
+lm->lm : result.add(lazyFixed)
+else resultSet.getString("type").equals("AUCTION")
+lm-->*a : <<create>>
+lm->lm : result.add(lazyAuction)
+end
+end
+[<--lm : result
+space
+deactivate lm
+[-> f : getDescription()
+activate f
+alt description == null
+f->f : load()
+activate f
+lm<-f : fetch(id)
+activate lm
+lm->db : resultSet = SELECT * FROM listing WHERE id = id LIMIT 1
+activate db
+space
+deactivate db
+lm-->*f2 : <<create>>
+lm-->f : fixed
+space
+deactivate lm
+f->f : coSellers = fixed.getCoSellers()
+f->f : description = fixed.getDescription()
+f->f : category = fixed.getCategory()
+f->f : condition = fixed.getCondition()
+deactivate f
+end
+[<--f : description

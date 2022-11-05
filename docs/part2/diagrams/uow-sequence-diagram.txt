@@ -1,0 +1,71 @@
+participant "CheckoutController" as cc
+participant "uow: UnitOfWork" as uow
+participant "listing: FixedPriceListing" as fpl
+participant "shipping: ShippingDetails" as sd
+participant "order: Order" as o
+participant "ListingMapper" as lm
+participant "ShippingDetailsMapper" as sdm
+participant "OrderMapper" as om
+database "database" as db
+
+[-> cc : POST "/checkout"
+activate cc
+create uow
+cc->uow : newCurrent()
+activate uow
+uow->uow : setCurrent(new UnitOfWork())
+activate uow
+space
+deactivate uow
+space
+deactivate uow
+cc->uow : uow = getCurrent()
+activate uow
+space
+deactivate uow
+cc->fpl : stock = getStock()
+activate fpl
+space
+deactivate fpl
+cc->fpl : setStock(stock - quantity)
+activate fpl
+space
+deactivate fpl
+cc->uow : registerDirty(listing)
+activate uow
+space
+deactivate uow
+cc-->*sd : <<create>>
+cc-->*o : <<create>>
+cc->uow : registerNew(shipping)
+activate uow
+space
+deactivate uow
+cc->uow : registerNew(order)
+activate uow
+space
+deactivate uow
+cc->uow : commit()
+activate uow
+uow->sdm : insert(shipping)
+activate sdm
+sdm->db : INSERT INTO shipping_details ...
+activate db
+space
+deactivate db
+deactivate sdm
+uow->om : insert(order)
+activate om
+om->db : INSERT INTO order ...
+activate db
+space
+deactivate db
+deactivate om
+uow->lm : update(listing)
+activate lm
+lm->db : UPDATE listing SET ... WHERE id = listing.getId()
+deactivate uow
+activate db
+space
+deactivate db
+deactivate lm

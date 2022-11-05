@@ -1,0 +1,47 @@
+DATE: 03-08-2022
+
+ATTENDEES:
+Daniel Blain
+Christopher Byrnes
+Mengjiao Wei
+Luke Rosa (Tutor)
+
+ABSENTEES:
+Gonzalo Molina
+
+---ANSWERS FROM TUTOR---
+CB: seller can modify an order-
+MW: that implies that the seller can modify quantity
+CB: should the seller be able to modify the quantity?
+LR: the seller can DECREASE ONLY
+CB: other question - if multiple seller accounts access a listing, does that imply the sellers act as staff of a certain store? or simply a nomination of others to access the listing as co-sellers?
+LR: either is fine - you can decide
+
+---MINUTES---
+DB: what's our focus for today? did we want to try converting the drawio use case diagram to PlantUML?
+CB: probably not, it might make our diagram layout even messier
+CB: file structure for the repo?
+MW: I think we should put the meetings, diagrams etc. inside the part 1 folder under docs
+CB: do we have diagrams for all parts?
+DB: only for parts 1 and 2 I think
+CB: should we include the report template in the repo?
+DB: I think we could label the template as work-in-progress to separate it from the final report we create
+CB: we can ignore including it in the initial commit though
+MW: there's also a checklist we'll need to include
+DB: we submit that to LMS, it's not part of the report
+CB: we can start on the domain model diagram
+CB: "Good" class - what should it have?
+MW: 'name' parameter
+DB: we should also have an 'id' per listing since there could be multiple listings with the same name given
+MW: 'category' as well
+DB: could be multiple per listing?
+CB: we'll assume single category for the sake of simplicity; also category should be a separate entity (with name, id)
+CB: also - since it'll probably be easier than drawio, we'll use PlantUML to create the Domain model
+(as this point, we talked with the tutor - see above)
+CB: so we can make the sellers share access in whatever way want
+MW: we could make it that we have a store with a super account, and sub accounts for sellers on that store
+CB: or we could have it, when someone registers as a seller, they have to either create or request access to a store
+DB: or we could ignore the details entirely, and not bother with the store approach to avoid complexity
+CB: that's true - we're already ignoring payment anyway so it doesn't matter as long as we're meeting the spec
+MW: for the category, we could have it as an enum and just copy the categories from eBay
+CB: might need to simplify some of the names for the diagram

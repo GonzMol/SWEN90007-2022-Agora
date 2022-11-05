@@ -1,0 +1,26 @@
+DATE: 13-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+DB: does anyone know how to generalise database access for different environments, e.g. via system variables?
+GM: don't know, sorry
+DB: I can try asking Luke tomorrow
+GM: I'll try to have the mappers done by tonight
+DB: have we decided how we're managing session?
+CB: if we are using Spring security, does that require a session state?
+MW: server side or client side?
+CB: I think server side, not sure; we'd go with that if given the option
+DB: so the user will have an access token then?
+CB: I think so
+CB: something as well, we might need the caller to submit objects to the UoW, rather than the objects doing it themselves
+CB: the mapper doesn't need to know abstract classes; it can create objects of concrete classes by checking the data
+CB: there are two constructors per class, one for creating and one for loading
+GM: yes, the fetch functions use the latter
+DB: do we want to fetch certain numbers of objects?
+CB: I think we ignore pagination for now, it would add too much complexity
+

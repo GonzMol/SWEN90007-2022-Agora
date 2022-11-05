@@ -1,0 +1,68 @@
+DATE: 24-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (tutor)       (LR)
+
+---MINUTES---
+CB: agenda - continue with the class diagram, start working on the DB schema
+CB: also we'll need to talk with Luke about our feedback
+LR: I've heard from Eduardo - were you after some more feedback, or a re-mark? I can ask the other tutor
+LR: some of the comments in the feedback are deductions, more just general remarks
+LR: I thought that some of these extra classes would just cause more complexity, e.g. extra details for shipping
+MW: we had thought to make it more realistic, also allows a better definition on what 'modifying an order' could look like
+LR: no need for this extra detail, there's already enough that's unrealistic about the project (e.g. deployment) that we aren't too worried with extra detail
+LR: do you guys no the difference between problem space and solution space domain models?
+LR: problem space model - before development
+LR: solution space model - reverse engineered from implementation
+LR: you wanted to be doing the problem space model as your diagram, mapping the real world before creating Java objects
+CB: we took some classes out to reduce duplication in the diagram, rather than e.g. putting listing details in both kinds of Listings
+LR: should still be from the persepctive of the user; as far as the user is concerned, they're separated
+CB: we also tried to avoid inheritance, as per Eduardo's advice
+LR: do you know the context for that?
+CB: in the domain model specifically
+LR: I agree with that - but in the domain model, I would still split User into Buyer and Seller without inheritance
+LR: I'll leave it up to you whether you want a re-mark, be aware it could come through with a lower mark than before
+CB: we'll need to remove the status from the diagram
+GM: also the checkout stuff?
+CB: we should ask whether to store with the listing or with the account
+GM: it'll probably be with the account itself, not the listing, it's simpler
+CB: also need to have "is active" with the listings - do we treat an admin deleting a listing the same then?
+DB: user might want to be able to look through their listing history
+MW: do we want to delete the condition? he didn't comment on it
+GM: I think he was mostly concerned with the business logic, condition is basically just a flag
+CB: order needs to track buyer, but not seller since we can fetch from the listing
+GM: do we need to attach "Standard User" to the listing types?
+CB: can just attach to "Listing" and inherit
+CB: should we just put the checkout details in the order?
+MW: guess so
+DB: rather than storing the checkout details, we can just have the user enter for every order individually
+CB: guess so, that would simplify things
+DB: do we want to look back through our use cases or not?
+GM: some of them might not make sense anymore, with our changes to the domain diagram
+CB: yeah, our main issue there was that we were too granular
+CB: we might be best defining our SQL tables first - they will inform e.g. data mapper
+DB: unit of work involves concurrency resolutions
+CB: we'll probably need to think about concurrency with auctions
+DB: also with fixed-price, if two people try to buy limited stock at the same time
+LR: for implementing checkout details, I'd personally go with adding to the profile and referencing
+CB: but you'd still need to store with the order, in case the account details were changed after the order was placed
+LR: yes
+CB: do we need to update the use case diagram for part 2?
+LR: no, I think just the domain model
+CB: which inheritance pattern do we want to use?
+DB: I'd say concrete table would be best
+CB: how many characters for the title?
+DB: I'd say 100 to be safe
+CB: for description?
+DB: thousand words worth? so about 5000 characters
+CB: maybe only 2000, 5000 seems too much
+MW: we could maybe just do 2500
+LR: also something to think about - how you will use Unit of Work; the address details could be a good use case
+GM: so storing the address details locally when placing an order, then submitting once done?
+LR: yeah - and also remember it will be handling concurrency later
+CB: we could also use it when the admin removes listings - select multiple, and update status as 'inactive'
+CB: we probably don't want full address details - postcode could do, or maybe country?

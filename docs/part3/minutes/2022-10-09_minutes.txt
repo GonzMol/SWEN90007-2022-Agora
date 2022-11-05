@@ -1,0 +1,68 @@
+DATE: 09-10-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+CB: I looked over the lecture, it was suggested that we allow the database to handle locking - it can do that itself, without a backend class being needed
+DB: how does this affect us?
+CB: we'll probably need to do our own locking for certain actions still, but can use this too - I think this is online locking
+CB: however, it uses the same kind of lock on an object for every transaction; we might still need to use the locking mapper for some transactions
+GM: how will we approach this?
+CB: we can probably split up which locks each of us create; it's not like we're creating separate layers this time
+GM: so Luke's suggestion was that when two transactions occur simultaneously, we simply accept only one?
+CB: yeah, he said some things are only really a concurrency issue if two users try to do the same thing at the EXACT same moment
+CB: maybe we only have an optimistic lock on listings?
+DB: possible case - a whole lot of users try to buy the same thing at the same time, due to external advertisement
+CB: can be handled by the database - it can queue transactions - or we can simply throw an exception and it won't go through
+CB: maybe we start with an optimistic lock and add a pessimistic lock (on the database) if needs be, time-permitting
+CB: is there an issue when modifying stock, that a user could purchase remaining stock at the same time?
+DB: yes - controller currently doesn't check any other change to the stock when updating
+CB: we could instead use a delta on stock, and check that it won't go below zero; we could try an optimistic lock
+MW: isn't it fine if we use a write lock?
+CB: the issue is that the POST method retrieves the object again, which might be different now from when it was first loaded
+MW: we could use the initially loaded object, and use version ID to try an optimistic lock?
+CB: there's a potential issue where the user could lose their progress
+MJ: just don't redirect
+CB: but we would still need to refresh; there's also the issue that the listing is updated by another seller (e.g. updated description)
+DB: we aren't being marked on usability; who cares if the information entered into the page is lost?
+MW: how do we justify that in our report though? losing the data would be hard to justify
+GM: they mentioned, with last year's project, that losing all the input data would be unjustifiable (answers to an exam), but this isn't as big - might not be worth worrying about
+CB: our justification is that we want liveness - we want users to be able to open a listing while someone else is editing so they can place an order
+CB: we can use this for deactivation as well - a deactivated listing will receive a higher version number and so an order will be unplaceable
+CB: fine for two bids to be placed at the same time, higher one will win anyway
+DB: issue when placing bids - if two users place the same amount, who wins?
+CB: maybe we do use a read lock, for this one situation?
+MW: when do we get the lock?
+DB: should get it when the user presses "bid"; if their bid is the same as someone else's, reject
+GM: yeah, that seems best
+CB: alternatively, if we want optimistic locking, we can add a 'maximum bid' field to the listing itself
+DB: how do we handle user bidding at auction's end?
+MW: I think we decided it's not a concurrency issue
+CB: actually it can be - if there's a read lock on the listing, the order can't be created until it's released
+DB: we don't have canceling orders currently - do we need to handle issues related to that?
+CB: we should implement, it's one of the expected base cases
+DB: would deactivating a listing cancel their orders?
+CB: I think that's fine
+DB: does version number even matter when deactivating? hardly matters what the rest of the state of the object is
+CB: deactivation shouldn't be allowed to fail
+DB: optimistic lock is supposed to compare the versions at commit time, to see if an update occured after the initial read
+CB: do you think it's fine to just use optimistic lock?
+DB: we use optimistic locking for listings; why not be consistent?
+CB: we're concerned with liveness for listings; orders, not so much
+DB: then maybe read lock is better
+MW: I agree
+CB: actually, then there will be an issue of loading when viewing all orders
+DB: we also should be able to cancel orders while they're being edited - maybe optimistic locking is the way to go
+DB: we'll need to lock the user and admin tables when setting/changing email/username
+DB: as for logging in just as user is deactivated, the GET and POST methods check if the user is valid and log them out if not - concurrency not needed
+CB: same with user interacting when not activated - they'd be kicked out
+DB: I think read locks on rows in the user table when user gets updated as admin tries to deactivate - only user and admin can affect that row so low liveness risk
+CB: we can use specific mapper functions to deactivate a listing to prevent the action being rejected
+CB: will the connections to the DB need to be created by the controllers and passed to the mapper?
+MW: I think the examples showed it being created in the mapper for optimistic locks
+CB: I'm asking about pessimistic; seems the connection is passed to the mappers in this case
+CB: we'll need a different Unit of Work for deactivating a user due to a lack of difference between deactivated auctions and ended auctions

@@ -1,0 +1,40 @@
+DATE: 14-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+CB: where should we put the Use Case diagram?
+MW: before the Use Case descriptions
+MW: do we need a table for conventions/terms/abbreviations?
+DB: I think it's probably better to have
+CB: the way extends/includes has been written in the use cases is the wrong way around, will need rewrites
+CB: do you think people should be able to browse listings without logging in?
+DB: I think users should be able to view without logging in
+GM: it makes sense for a Marketplace to be able to do that
+GM: can a co-seller mark complete an order on behalf of the original seller?
+CB: I think so, it would get marked as complete for all sellers; we can probably say that in the use case
+CB: we'll need to reword some of the use cases to be consistent with tense, and to use words like 'can', etc.
+CB: "Active Listings" or "Existing Listings"?
+MW: I think "Existing Listings"
+CB: would that imply past listings as well?
+MW: yeah it does, so maybe "Active Listing" is better
+CB: an old example from SWEN30006 puts references to other use cases named as-is, with underlines
+DB: can we reword them for full sentences? rather than dot point; I don't think it matters too much
+CB: we should remove reference to the database, this should be from the user
+CB: we can probably also use pronouns ("they") in the descriptions more, rather than writing "users" everytime
+GM: should the price set for Auction Listing and Fixed Price Listing be different in the use cases?
+CB: yes, we've made them separate in the Domain Model already
+CB: should we specify, for Edit Auction Listing, that it must be edited before going live?
+GM: yeah that makes sense
+CB: I think eBay does it that the listing can be edited until the first bid is placed
+GM: either way is fine, but being able to edit until the first bid is nice
+MW: isn't that more complex?
+CB: only really need a simple check to see if there's been a bid placed or not
+DB: only issue with that is that it could be difficult to deal with for concurrency
+CB: true, there's the case that someone places a bid while editing is occurring
+CB: conversely, in the other option, what if they are editing past the start time? do we kick them out?
+CB: I guess we could have it that if a bid is placed, then the editor is notified and cannot save their changes

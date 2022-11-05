@@ -1,0 +1,17 @@
+DATE: 05-10-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (Tutor)       (LR)
+
+---MINUTES---
+CB: we'll need pessimistic locking for checkout, to ensure stock is updated correctly but that two users can checkout at the same time
+CB: for editing a listing, we should use the same object loaded in with the page rather than reloading
+DB: I can make that change
+CB: maybe we should ask whether we need to be locking when reading only (i.e., when page loads)
+DB: yeah I don't think we need a read lock there
+CB: I think the Order object can use an optimistic lock; even if we read-lock a listing we can still update the order object
+CB: for pessimistic locking, 

@@ -1,0 +1,39 @@
+DATE: 28-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+CB: yesterday, when we talked about pessmistic locking, we had assumed locking everything - but you can lock just for writing or reading, or both
+CB: however, if we have people buying stock and there is enough for all, then we don't want to block
+DB: thing is, how do we determine that there's enough stock for multiple simultaneous users?
+GM: best approach would be to queue the updates and apply one at a time
+DB: we can also try optimistic locking for e.g. updating, but might mean aborting some changes
+GM: would we then need to have a version number in every table?
+CB: only for tables that are included in optimistic offline locking
+DB: could we have the process loop until successful? if the commit aborts
+CB: won't it just keep failing?
+DB: if we re-read the object each loop, it would eventually succeed
+GM: why is updating emails simultaneously a concurrency issues?
+MW: because the emails are used for login; they need to be unique
+GM: listings might be better to do through optimistic locking
+MW: do they need to be all done through the same pattern for each listing issue?
+CB: we'd need to be updating the mappers and database, so makes sense
+MW: I thought that in some instanes, e.g. listing deactivation vs. updating, should be pessimistic
+GM: optimistic works better for updating a listing, but pessimistic is better for purchasing
+CB: yes - if any change happens to a listing, then the buyer's checkout attempt would fail
+GM: I think liveness is only really a big priority when it comes to listings
+CB: true, orders being edited at the same time is less likely to happen, realistically
+MW: I'm not sure how the User issues act as concurrency issues
+CB: yeah, can't lock when creating a new user since it doesn't exist yet
+DB: is it possible to lock the whole table? then, when registering, the table gets locked?
+GM: could we roll back if something happens?
+DB: that's optimistic locking
+CB: problem is, we don't have the initial version number - we'd also need to check all users at write time in case someone else changes their email
+DB: locking the table might be permissible, if the whole transaction takes an extremely short time (e.g. a few milliseconds)
+CB: we'd also need to lock the admin table at the same time
+GM: if a user updates their order when someone else buys stock for the same listing, how to handle? optimistic?
+DB: I'd say so - if the second update is blocked by now-lacking stock then it'll get rejected anyway

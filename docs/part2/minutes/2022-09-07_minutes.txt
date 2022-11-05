@@ -1,0 +1,59 @@
+DATE: 07-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)    (remote, not in-person, for this meeting)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (tutor)       (LR)
+
+---MINUTES---
+MW: we are trying to decide how we use the unit of work
+DB: didn't we decide how we were using it already?
+CB: we're renaming some of our folders, Agora -> domain, com.example etc. -> controller
+MW: should we also update the frontend folder to 'view'?
+CB: the listing class itself will implement Lazy load
+CB: the mapper creates the object for the database yeah?
+MW: we can use Spring for security, as per today's lecture
+MW: we are mocking up a diagram, request to data mapper, which connects with IM, UoW, DB
+CB: we can possibly use Ghost for Lazy load
+MW: I think Ghost works fine
+CB: we can have an Identity Map for each Table in the database
+DB: what are our urgent tasks?
+CB: there's nothing in the controllers
+DB: those are the Java servlets yeah?
+MW: yeah, we need to write some functions to call the mappers
+CB: if we go with the objects themselves needing to register the Unit of Work then we don't need to worry about deciding where the UoW goes on the mapper
+GM: at the moment the object passed to the mapper basically doesn't get modified, just passed to the SQL query?
+CB: yeah, that's what we have at the moment; though a problem is that they aren't created with an ID, it gets assigned when passed to the DB
+GM: we need to return the actual ID assigned when we pass off the object to the DB; problem is we need to provide a dummy ID in the object
+CB: could get around this by passing fields to the mapper instead of an object
+MW: what controllers do we need?
+CB: one per page?
+GM: yeah, functionality can be unique per page, we probably don't need any more or less than that
+CB: all pages will share the same navbar and footer, but apart from that are separate, so we can have page-level controllers
+MW: do we need per action rather than per page? I think I read that controllers can be either
+CB: only need to be page level
+MW: feel free to delete then
+DB: will do
+CB: also makes sense to place Bids within the Listing page
+MW: wanted to check, should the pages for create auction listing or fixed listing be the same?
+CB: would need to be dynamic, so might create unnecessary complexity for us to implement
+LR: where are you using Lazy load?
+CB: we think for listing pages; you can see multiple listings without details, click on one to get details
+LR: it's a bit difficult to find opportunities in a project like this, due to lack of videos/images
+CB: we're having trouble deciding how to use Unit of Work
+LR: that can take a while to figure out; I would personally use it when purchasing - it fits with part 3 on concurrency as well
+GM: so can Unit of Work be used when modifying multiple attributes of a single object, rather than multiple objects?
+LR: yeah that can work; if editing multiple listings, I'd argue that's multiple use cases and would require one UoW per listing
+CB: so would it be suitable for checkout then?
+LR: that'd probably be the best use case; or possibly when creating a listing
+CB: we aren't allowing users to create categories, it's just a basic enum
+MW: it's fine to use Spring for authentication?
+LR: that's fine; in general for a real-world application it would be better not to, but for this it's okay
+CB: is there a register page with it as well? we were only shown a login page
+LR: not sure, you'd need to look into that
+CB: do we need a service layer?
+LR: not necessary, only if you really want to
+CB: we won't do identity mapper for now, to simplify
+CB: also I updated the SQL table setup queries due to an earlier mistake, might need to drop your tables and re-run

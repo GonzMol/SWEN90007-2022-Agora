@@ -1,0 +1,45 @@
+DATE: 30-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+DB: due date for part 2 has been pushed forward to the 21st
+CB: I've updated the domain model - what does everyone think?
+DB: "part of" should be "is part of"
+CB: checkout details have been moved to the Order object
+CB: there's a lot of duplicate fields in different objects now, enums have been removed too
+MW: can probably just delete status, we were told this wasn't necessary
+CB: I've also changed the Admins interaction with users to "views" since they can't do anything beyond that
+CB: also class diagram - it's similar to our domain model but structured around our code objects (enums included)
+CB: standard user could also include their details, and this can be copied into the order yeah?
+GM: I think so
+CB: I've created some tables in postgresql, but there are some issues
+CB: since there's inheritance for users, we'll need to pick a pattern for that - I'm thinking single-table
+CB: this shouldn't be much of an issue - all standard users have the same details, only the admin is different but there is only one admin
+CB: also we can store the password hash if we want to make it more secure
+GM: I don't think anything else is needed, postgres will just to it itself?
+CB: I think we were gonna use username as primary key and can't let users change it; that way, dodgy users can't change their username to evade the Admin
+CB: also - needs to be snake case for the database, not camel case
+CB: something messy as well - from using concrete table inheritance for listings, it means that an order has two foreign keys, one per listing type
+DB: sort of a non-issue - in our frontend implementation, it won't be posting Orders that include keys for both types of listings; it'd only be if someone got access to the database that this could happen
+CB: it would also mean that when fetching an order, if we want to find the associated listing, we have to look through both tables
+GM: it might be fine to just do that, not a huge deal
+CB: we have a few options for how we map the relationship between listings an orders
+CB: option 1: there can be multiple orders for fixed-price listings, OR one for an auction listing
+MW: I thought we weren't doing the shopping cart, so it's one listing per order?
+CB: other way around - since fixed-price listings can have multiple stock, they might have multiple orders placed on them
+CB: option 2: single-table inheritance for listings, meaning there will be NULL data in some fields and a type field
+CB: option 3: create a generic listing table and two other tables for the specific listing types
+MW: does the listing store the bids?
+CB: bids will store the listing; they have the listing id as a foreign key
+MW: I think the second option is the best
+DB: third option is complicated to lookup - have to do a cross product of order against each listing type
+GM: I think I prefer the second option too - that way we can clearly tell which type of listing is associated with each order from the listing itself
+CB: we'll still need an intermediate table as well, for seller to listing - due to the many-to-many relationship
+DB: you could put the foreign keys in the intermediate table, that way you would only need to look up that table for one or both of the keys
+CB: we'll need somewhere to keep track of our tasks as well, in the mean time we could get started on frontend or mapper layer
+GM: we can just choose which tasks we want to do perhaps, add them ourselves; we can think of ways to implement all the requirements as well

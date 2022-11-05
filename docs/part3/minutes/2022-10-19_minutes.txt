@@ -1,0 +1,42 @@
+DATE: 12-10-2022
+
+ATTENDEES:
+Mengjiao Wei            (MW)
+Luke Rosa (tutor)       (LR)
+
+NOTES:
+Part 3:
+Testing (Jmeter)
+MJ: our plan is to send simultaneously requests, went through one example, we decided to run 50 times for each test, to see the consistency
+Luke: so you send each request for 50 times, why did you choose to run 50 times? we discussed about the boundary analysis and stuff like that do you have a strategy why did you choose 50?
+MJ: we don’t have a specific reason for choosing 50 times, it’s quite random. and basically copied what Maria did during lecture she sent 2 simultaneously requests for 100 times and checked the database to verify the solution works. So you want us to explain why we decide to run a test for certain amount times.
+Luke: 2 different type of tests in this case, one is one user doing the same testcase over and over again, boundary analysis to 4mins 2 user to contain to do the two different things is a bit harder. If you want to cover the basis, I would suggest to reduce to a lower number, just to make sure that it does actually work. 2 users, 4 users to keep for 50times. you can just say it works for large amount requests and also handles for small concurrency issues. reduce 50times to down to 4 or 5 times. focus on more important stuff.
+feedback about current testing strategy is good enough.
+test plan is following the comment from Maria on Ed discussion board, check that the requests were actually processed by the server (e.g., no 404, 500 or similar errors), and then check the data to ensure it remains consistent based on your business rules.
+MJ: for bid on the listing, for those difficult scenarios, can we run manually?
+Luke: yes, it’s okay to run manually, some of them without full framework it’s difficult to test, you can do manually, and record the steps and result. make sure you screenshots and discuss the approach as well. why do you use Jmeter is too difficult to use
+MJ: more than 2 users might involved in for some cases, for example, multiple users can try to bid on one listing at the same time. Is it okay to test just on 2 users?
+Luke: do one test with just 2 users and another test with 50. just to check on that.
+you don’t need to do Unit test, just screenshot the database and prove that data is saved that will be good, exporting the result from Jmeter maybe put in the appendix
+class diagram:
+focus on your class diagram cuz you didn’t have it in Part 2, I couldn’t give you some feedback
+relationship between classes are correct, pointed to the right direction and relationship types are correct.
+if you have interface, make sure you don’t duplicate methods in interface and from the class implemented into interface, keep them in the interface
+make sure you show the diagram for entire application
+if u use intelliJ, make sure you DON’t include the funny stuff you dont need.
+Report:
+review is important, justification for reason behind and also for the patterns. maybe sure the reason is clear and thought through, make sure you talk about trade off between user concurrency, liveness, data integrity and complexity. they are kinda the main tradeoffs. so make sure you talk about how they effect your choose for some patterns.
+Code:
+go over where you take the lock out. the most common mistake for optimistic and pessimistic locking is to take the locks at the wrong point of the time. for pessimistic locks, for some students, they said they took a pessimistic lock because they took a read-write lock, but pessimistic is at the beginning of the transaction, at the beginning of the use case. and it suppose to last for entire use case, where most of student will not take the lock at the very beginning, will only take a read-write lock at the very end when they committing, then they call it a pessimistic lock, so maybe just review the code line-by-line, and make sure your solution match with the pattern you try to implement.
+make sure you haven’t misunderstood or mis-implemented the patterns
+Presentation:
+take me through where you identify the concurrency
+I will get you either take through the testing, or show me manually in the application
+----------------------------------------------------------------------------------------------------------------------------------
+Part 4:
+similar to part 3 think about your strategy what you want to talk about and why
+read through the performance and lecture things like that
+potential performance gains and loss that we made, what will require the change of the system, what could be extended or implemented by the system that might resolve, how complex it is, backup with some proves if you can
+maybe do a test on it
+you can profile on different api you’re using to see which one is the slowest, once you identify the slowest api then you can talk about the reason behind it, maybe the unit of work is really slow. make that better make the change on UOW, or maybe the UOW is really fast.
+do performance profile

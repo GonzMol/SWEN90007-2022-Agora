@@ -1,0 +1,34 @@
+DATE: 27-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+
+---MINUTES---
+MW: I've started writing out some concurrency issues in the Google document
+MW: my understanding is that we list out concurrency issues, choose a pattern for each, and implement
+GM: is part 3 only on concurrency?
+MW: yes
+DB: we can try to do some bug fixes from part 2 as well
+CB: there's cancelling orders, as well as unit of work, which need fixing
+MW: should we try grouping our issues according to solution?
+GM: I think that's probably easier, might want to ask Luke what the best approach is
+GM: probably the easiest thing to do is to lock listings if a user tries doing anything
+CB: do we need to worry about editing an in-progress auction?
+DB: the frontend locks editing if it's passed the beginning of the auction; not sure about backend controllers
+CB: we probably don't need to worry about whether two people bid at the same time if we allow storing both anyway
+MW: it's a concurrency issue though
+CB: alternatively, we could display an error if a higher bid has been placed
+DB: the way I see it, it's order-based - whoevers bid arrives first, for the same amount, is successful
+CB: bidding when the auction ends could also be time-based? take bid only if it arrives before end of auction
+DB: more generally, I think we should just take the updates in the order they arrive - reject updates that arrive afterwards
+MW: if a seller tries to cancel an order, a buyer could try to edit at the same time - concurrency
+GM: or vice versa
+CB: I think if we lock modifying stock for an inactive listing, that works
+GM: how does zero stock work?
+DB: shows as "out of stock" until the seller updates the stock
+DB: controllers don't use objects from frontend on POST, but get again from database; we can use pessimistic locking in such instances
+CB: what about deactivating users when they're trying to do something
+DB: we can lock the user while performing an action; so long as we maintain order it doesn't matter which happens first

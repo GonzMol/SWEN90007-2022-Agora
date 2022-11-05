@@ -1,0 +1,70 @@
+DATE: 14-09-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (tutor)       (LR)
+
+---MINUTES---
+MW: should the NavBar call other JSPs or call the controllers?
+LR: call the controllers, that's more extensible too
+MW: is it okay to use a separate NavBar component rather than copy code in every page?
+LR: yes that's fine, but you can copy code if you want
+DB: how should we handle separate environment setups for the local DBs?
+LR: easiest way - commit your DB class with Heroku configuration to GitHub, then gitignore and fill out with local credentials
+DB: how can I test controllers when the view might not be done
+CB: use POSTman
+MW: I've made the site prettier, though there are some edits I'll need to make, like removing 'Login'
+DB: do we not need a login page?
+CB: we will just redirect to Spring if not logged in
+DB: wouldn't it be more realistic to be able to navigate pages without being logged in?
+CB: yes, but more difficult
+GM: I don't think it matters for marking; all we need to be doing is meeting the requirements set
+MW: does the order page just need the details loaded in?
+CB: user should be able to edit their shipping details for the order
+GM: if the user changes their shipping details in an order, does it change it in the database?
+CB: no, that's separate
+GM: how does that get inserted into the DB? can a user have multiple addresses?
+CB: shouldn't complain according to our schema
+GM: true, the shipping details don't have a foreign key to the user - but that means the shipping details will just sit there after use
+CB: should be one row for every user, and one for every order
+MW: who creates the accounts? only admin, or ordinary users?
+GM: there's an onboards sellers use case
+CB: I think that's different to registering though
+MW: would that be that the admin can see the list of users, and the admin can choose to mark as sellers?
+GM: like they would just approve users to be sellers?
+DB: would this need to be a two-step process? like they can request to be a seller?
+MW: so the user would choose whether they want to sign-up as a seller and the admin approves?
+DB: yeah, the admin could filter the user list by those who have requested and then approve or decline
+CB: I think we should ask Luke again
+GM: yeah, I think he had some advice about this previously - I don't much like the onboarding process
+MW: when searching by item or seller, where did we land on this? do we select what we search on? just the owning seller?
+GM: I think so
+MW: when a user creates an order, can they change that order's shipping address afterwards?
+CB: I think so
+GM: who cancels orders? both buyers and sellers?
+CB: makes sense for both of them to do so?
+MW: should cancelling be on the view order page? or on the all order page?
+CB: probably the first, so they have to select it and then cancel
+CB: how do we handle the "onboard sellers"? can we have users self-register as both, and the admin can deactivate bad accounts?
+LR: it's okay to choose which way you want to go with this, so long as there's some way to remove users from selling
+CB: what's the coding expectations?
+LR: not explicitly mentioned, but we go through your work, to check for e.g. unit of work etc.; best to keep it neat, but it's not required
+CB: for single table inheritance, in the lecture, they had an abstract mapper and concrete mappers; is that necessary?
+LR: it's not necessary, even for single table inheritance
+CB: fine to have a single mapper class that checks the type of listing and creates the appropriate class
+LR: good question; personally I would create the interface but not sure if it's necessary
+DB: what are the expectations for the presentation next week?
+LR: we'll have the use cases we expected, and ask you to show all of them in the system, then talk through UoW and justification
+LR: if there's time I'll ask to see justification for the use of other patterns
+LR: how much extra work would it be to adjust the objects to remove the abstract classes?
+CB: we currently don't instantiate abstract classes, just use the mapper to pick the appropriate class
+LR: that's fine as well
+DB: we should try to get the site working by the end of the weekend, so we have time left for just the report
+DB: do we use Spring at the controller level?
+MW: I think so, that makes sense
+CB: should probably updating fetching to be by ID; we need to pass IDs between mappers to fetch other objects
+GM: yep, I'll make that change
+CB: also will need, in the co-seller mapper, a fetch with listing ID; same in the bid mapper

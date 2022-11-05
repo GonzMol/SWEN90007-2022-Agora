@@ -1,0 +1,47 @@
+DATE: 12-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Mengjiao Wei            (MW)
+
+ABSENTEES:
+Gonzalo Molina
+
+---MINUTES---
+CB: some more updates to the use case diagram; actors are now a standard user that can act as a seller or buyer, all users, individual roles
+CB: I also took a look at the SWEN30006 notes - that advised against single-step use cases (e.g. login/logout)
+CB: view listings could include login, for example - would it be viewed by most recent or by auction first?
+MW: I'd say most recent listings; it would encourage sellers to get the products sold
+DB: could also show by active listings first
+CB: should 'date' be added to listing detail on the domain diagram, or is that more of an implementation detail?
+MW: is that date created or date updated?
+CB: probably date created; if sorting by update then someone could keep updating to keep their product at the top of the list
+DB: I saw a question on the discussion board about what happens when the highest bidder has their bid removed (e.g. through account deletion)
+CB: we could perhaps add a Bid class that tracks an individual Bid made on an auction, and the auction has a collection of those
+MW: if we have Bid as a separate entity, then we don't need price in the Listing Details, we can just have that in the Fixed Price Listing
+CB: we can probably drop the direct relationship between User and Auction Listing of 'bids on' since it now goes via the Bid class
+CB: relatedly, should we drop the Shipping Method? we're just giving ourselves extra complexity beyond the spec otherwise; besides, Luke told us we don't need shipping cost details
+DB: yeah we can probably drop that
+MW: why is the use case for the seller called "modify seller order"? already know it's for the seller
+CB: we can rename to just "modify order"
+MW: why do we need cancel order separately under Buyer and Seller?
+CB: they'd be different, but I guess that comes down to implementation - we could use the same use case
+MW: should buyers be able to put a reason for cancelling their order?
+CB: I'd say no, unnecessary complexity
+CB: also I added "purchase auction good", as a separate action for the winning bidder to take, which includes entering checkout details - thoughts?
+DB: not sure, how does entering checkout details work on e.g. eBay? does it happen when you bid or when you succeed?
+CB: I can test... seems to be that you can place a bid without putting in checkout details?
+MW: do we really need checkout details if we don't bother with shipping method?
+CB: it's part of the specification, so we should include it; we can rename 'purchase auction good' to 'checkout winning auction'
+DB: do we want Admin to be able to delete other accounts, reset passwords, etc.?
+CB: not in the specification, only viewing users; should we maybe have 'account management' for users?
+DB: I think we need some level of account management, otherwise can't change/reset password, delete account
+CB: I guess that would also apply to the admin as well; we'd probably also want to be able to edit email
+DB: maybe also change name?
+MW: if the user can keep changing their user names, if they are dodgy sellers that could be bad
+DB: there's the option of limiting the number of times/how frequently a user name can be changed
+CB: that's probably adding in too much complexity
+CB: keep in mind that when writing a use case, if it "includes" another, then you also need to mention how it does so; don't need to write the other way around
+MW: so I still need to write "included" use cases on their own anyway?
+CB: yeah, everything in an oval is a use case and needs to be described; you can probably underline a sub-case to show it

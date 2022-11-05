@@ -1,0 +1,61 @@
+DATE: 31-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (tutor)       (LR)
+
+---MINUTES---
+CB: in light of the minimum use cases specified, we'll need to change our models
+GM: I think "Admin onboards seller" would mean Admin needs to approve a user to be a seller
+MW: what would the process be?
+CB: Admins add sellers to seller groups; does this mean that a seller must belong to a seller group to sell something?
+DB: seems that a seller group is how they want us to implement multiple sellers managing a listing
+CB: yeah, but that goes against what we decided and they approved for us earlier - so now we need to redesign
+CB: can a seller be part of multiple seller groups or just one?
+DB: can sellers create seller groups? how do they request to join one?
+CB: seems they don't, Admin does everything
+DB: that is very much not how an actual online marketplace works
+CB: I'll need to update some of these database scripts
+DB: what frameworks should we be using?
+MW: we can just stick with JSP
+CB: they have specified what we can and can't use
+GM: it's restrictive for the backend but frontend is pretty open
+MW: what patterns will we use?
+CB: lazy load for listings and orders; unit of work for editing a listing?
+MW: unit of work could also be used for editing/deleting users
+CB: we already have patterns for inheritance in our database design
+GM: foreign key mappings too
+CB: we can use Page Controller to handle pages, probably better for our design than Front Controller
+DB: which Session pattern do we want to use?
+MW: would client side be easiest?
+CB: we need to decide what happens with foreign keys on update/delete of an object
+GM: I think we should set to NULL, I think they advised not to delete oecjts in the database
+CB: for bids, listings, etc., if the user gets deleted then maybe the object gets deleted too?
+GM: so anything that is associated with that object gets dropped?
+CB: anything with a foreign key referencing it; we could use "restrict" to prevent a delete if there are associations though
+CB: maybe we should just make all updates restricted, so we can't change any primary keys; deletes can just NULL foreign keys
+LR: on the seller groups, it's fine to go with your initial design; the seller group functionality suggested was just to specify some base use cases
+CB: our sellers decide on a per-listing basis who to assign as co-sellers; is that fine?
+LR: so long as it's documented and justified in your write-up
+MW: why do sellers need to be onboarded?
+LR: it's a security thing, to prevent just anyone from posting listings; it can be as simple as creating a separate account for a seller than a buyer
+CB: we modelled it so that a single user can be a buyer or seller; would then we just add an "is seller" field to a user to determine if they have that permission?
+LR: that could be fine
+CB: how does an admin manage seller groups then if we go this route?
+LR: maybe allow an admin to simply remove all users from a listing
+CB: we'll try going with having the original seller who created the listing then be in charge of it, given more privileges for it than co-sellers
+CB: for foreign keys, what should happen when a user is deleted? specifically, what happens to their listings/bids/orders/etc.?
+LR: could do what's done for listings, rather than delete set as inactive
+CB: so we can stick with what we've got, except that when an admin deactivates an account, they are removed from any listings they are part of
+CB: if the inactive user was the only remaining seller for a listing, then the listing gets deactivated too
+GM: I think, from Luke's explanation, the Admin should have site-wide priveleges to deactivate users/listings or remove users from listings
+MW: we could do like Google Drive, have the initial seller be the "owner" who can add and remove co-sellers, but co-sellers cannot remove other sellers
+GM: can co-sellers add more co-sellers?
+DB: that could balloon; imagine if every seller could add five more sellers
+CB: we can add a foreign key to listing for the owning seller
+DB: if owner is deactivated, who becomes the new owner?
+GM: I think we just activate the listing
+CB: yeah, if the initial user is malicious then it's probable that the other added users may also be malicious

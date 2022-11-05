@@ -1,0 +1,1 @@
+<footer class="mt-auto p-4 bg-dark text-white text-center">Agora Marketplace, 2022</footer>

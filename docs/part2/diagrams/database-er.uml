@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.admin</OriginalElement>
+  <nodes>
+    <node x="96.67619047619024" y="-483.0">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user</node>
+    <node x="-156.284523809524" y="-461.0">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.admin</node>
+    <node x="15.332142857142685" y="182.0">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.order</node>
+    <node x="398.02440476190475" y="-549.0">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.shipping_details</node>
+    <node x="583.5244047619047" y="182.0">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.bid</node>
+    <node x="366.52440476190475" y="-240.25">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.listing</node>
+    <node x="358.9282738095237" y="215.5">2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.co_seller</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.bid" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.listing" relationship="REFERENCES">
+      <point x="-56.5" y="-71.0" />
+      <point x="640.0244047619047" y="125.75" />
+      <point x="502.02440476190475" y="125.75" />
+      <point x="0.0" y="159.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.order" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.listing" relationship="REFERENCES">
+      <point x="69.68690476190486" y="-82.0" />
+      <point x="198.01904761904754" y="125.75" />
+      <point x="502.02440476190475" y="125.75" />
+      <point x="0.0" y="159.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.order" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.shipping_details" relationship="REFERENCES">
+      <point x="-0.3023809523809291" y="-86.0" />
+      <point x="128.02976190476176" y="-96.0" />
+      <point x="320.6842261904761" y="-96.0" />
+      <point x="320.6842261904761" y="-509.0" />
+      <point x="502.02440476190475" y="-509.0" />
+      <point x="0.0" y="115.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.co_seller" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.listing" relationship="REFERENCES">
+      <point x="2.0717261904762836" y="10.0" />
+      <point x="414.5" y="125.75" />
+      <point x="502.02440476190475" y="125.75" />
+      <point x="0.0" y="159.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.co_seller" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user" relationship="REFERENCES">
+      <point x="4.071726190476284" y="8.0" />
+      <point x="416.5" y="366.125" />
+      <point x="860.7154761904761" y="366.125" />
+      <point x="860.7154761904761" y="-279.625" />
+      <point x="182.34404761904756" y="-279.625" />
+      <point x="182.34404761904756" y="-354.0" />
+      <point x="3.655952380952442" y="47.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.bid" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user" relationship="REFERENCES">
+      <point x="56.5" y="-71.0" />
+      <point x="753.0244047619047" y="-279.625" />
+      <point x="182.34404761904756" y="-279.625" />
+      <point x="182.34404761904756" y="-319.0" />
+      <point x="63.333333333333314" y="82.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.listing" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user" relationship="REFERENCES">
+      <point x="0.0" y="-159.0" />
+      <point x="502.02440476190475" y="-279.625" />
+      <point x="182.34404761904756" y="-279.625" />
+      <point x="182.34404761904756" y="-319.0" />
+      <point x="230.0" y="-319.0" />
+      <point x="38.32380952380976" y="59.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.order" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user" relationship="REFERENCES">
+      <point x="-68.31309523809514" y="-75.0" />
+      <point x="60.01904761904754" y="-279.0" />
+      <point x="182.34404761904756" y="-279.0" />
+      <point x="182.34404761904756" y="-319.0" />
+      <point x="128.33214285714268" y="-319.0" />
+      <point x="-63.34404761904756" y="52.0" />
+    </edge>
+    <edge source="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.user" target="2b51fa42-9be3-4136-8a7d-9be16cd54aa2.TABLE:SWEN90007.public.shipping_details" relationship="REFERENCES">
+      <point x="0.0" y="-82.0" />
+      <point x="191.67619047619024" y="-509.0" />
+      <point x="502.02440476190475" y="-509.0" />
+      <point x="0.0" y="115.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="478.0" y="-19.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Comments</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

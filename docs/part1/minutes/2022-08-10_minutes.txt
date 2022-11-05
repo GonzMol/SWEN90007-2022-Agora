@@ -1,0 +1,74 @@
+DATE: 10-08-2022
+
+ATTENDEES:
+Daniel Blain            (DB)
+Christopher Byrnes      (CB)
+Gonzalo Molina          (GM)
+Mengjiao Wei            (MW)
+Luke Rosa (Tutor)       (LR)
+
+---MINUTES---
+CB: should we be making more specific use cases? rather than generic ones shared by Actors, but with different nuances
+GM: that's probably best
+CB: also - do we include IDs in the domain diagram? they're more of an implementation thing, but they inform uniqueness of entries
+GM: scenario of having multiple of the same item for auction?
+CB: it can happen, e.g. for refurbished identical items
+MW: so we include stock in both types of sale?
+GM: could have it so that a seller could create multiple individual auctions from a set stock of items
+CB: so then "edit listing" might need to be extended from both sale types
+DB: shouldn't be able to edit a listing mid-auction
+CB: it'd be bad if someone could edit shipping cost, for example
+DB: isn't shipping cost variable? based on distance
+GM: can depend
+MW: we can have some estimate calculation
+CB: there can be flat rates; we could just assume flat rates to simplify the scope
+MW: we could ignore the shipping price and include it in the actual price
+GM: it's a bit more market-y to list the actual sale price
+CB: by the way, I've renamed "seller" and "customer" to "seller" and "buyer" for simplicity
+MW: we have view all listings, but that's vague - do we display every listing published? and what do sellers see?
+GM: would there be just a page for the current listings for a user? that makes more sense; makes it easier to view individual listings from there
+CB: should it be "view my listings" for the seller? viewing "all" listings is only for the admin
+CB: we could be more hierarchical - have "manage listings" include view, create, update, delete
+GM: yeah, that makes sense
+MW: on the template, do we need to replace some of the pre-filled items? they already describe what we have (e.g. proposal)
+DB: yeah those are probably fine to keep
+CB: only fixed-price listings editable?
+DB: auction listings should be editable up until the start of the auction
+CB: can also cancel an auction, even after it's started I think
+MW: should the start time be right after pusblishing the listing?
+DB: it's possible a seller would want to promote their auction, get people waiting for it to start
+GM: rather than have an end time, we could instead specify a duration; end date is calculated from that and start date
+CB: there will be complexity, for hiding an auction that hasn't started yet
+DB: you could still display, with a countdown timer
+CB: what if a seller edits the moment before the listing goes live?
+DB: could make the page auto-refresh when the countdown hits zero, so it's up-to-date
+CB: then should we have edit listing be two use cases, one for auction and one for fixed?
+GM: makes sense, they have different attributes
+DB: we could also just include high-level use cases for now - we have to do an updated use case diagram for part 2 anyway, maybe we put complexity there?
+GM: also the customer could browse different items and add to cart
+MW: that's more complexity - we could just have items bought and sold one at a time for simplicity
+CB: relatedly, we could say that setting start/end time is just part of the create auction use case
+CB: there's the question of deleting listings - it's different for sellers versus the Admin
+LR: there are different ways to model granular use cases - you could have a parent Actor serving both roles, linked to a shared use case
+LR: have two Actors linked to a use case implies that both are necessary for the use case
+CB: there will be overlap for e.g. viewing listing, but don't know whether the use case would be the same for both
+GM: seller could view and delete their listings in a specific location, whereas Admin would have all listings on their dashboard that they can delete
+CB: including IDs in the domain moel?
+LR: no, don't include
+CB: thinking about it from a database perspective, how do we show uniqueness without IDs?
+LR: two kinds of domain models, one for general use and not including technical details (e.g. IDs), and another created at the end for engineers, which would include database-specific records and also methods
+MW: on the report, do we need to write any extra information in the introduction, given that there are already appropriate entries?
+LR: should be fine to leave
+CB: we've also put shipment type in our domain, even though it's not in the spec; this can include shipping price too - how to handle?
+LR: you can include the shipment type but exclude the shipping price for simplicity - it's not in the spec after all
+DB: we don't need too much detail, at the least we need to be meeting the spec
+CB: they have encouraged us to come up with the details though
+GM: we can just have a simple toggle for that
+CB: so are you suggesting that all listings could have both options? I was thinking the user could specify which shipping options are available
+MW: it can make sense to be able to pick up items
+CB: or we could ditch shipping entirely, and just assume one
+GM: we can make the argument that there's no shipping and it's just a local marketplace
+MW: if the seller creates a listing, and specifies shipment type, isn't that still simple enough to implement? should be easy to specify an extra shipping fee
+GM: or shipping could be an option but we ignore the fee
+CB: we could leave it at that, and wait for the feedback instead
+CB: also seems that we've been doing the use case diagram wrong - shared actors needed for shared roles - we'll need to fix that

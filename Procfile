@@ -1,0 +1,1 @@
+web: java $JAVA_OPTS -jar target/dependency/webapp-runner.jar $WEBAPP_RUNNER_OPTS --port $PORT target/SWEN90007-2022-Agora-1.0-SNAPSHOT.war

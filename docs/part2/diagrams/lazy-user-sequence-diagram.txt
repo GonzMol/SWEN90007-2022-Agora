@@ -1,0 +1,33 @@
+participant "StandardUserMapper" as sum
+participant "lazyUser: StandardUser" as su
+participant "user: StandardUser" as su2
+database "database" as db
+
+[-> sum : fetch(id)
+activate sum
+sum->db : resultSet = SELECT * FROM user WHERE id = id LIMIT 1
+activate db
+space
+deactivate db
+sum-->*su : <<create>>
+[<--sum : lazyUser
+space
+deactivate sum
+[-> su : getPassHash()
+activate su
+alt passHash == null
+sum<-su : fetchPopulated(id)
+activate sum
+sum->db : resultSet = SELECT * FROM user WHERE id = id LIMIT 1
+activate db
+space
+deactivate db
+sum-->*su2 : <<create>>
+sum-->su : user
+space
+deactivate sum
+su->su : passHash = user.getPassHash()
+end
+[<--su : passHash
+space
+deactivate su

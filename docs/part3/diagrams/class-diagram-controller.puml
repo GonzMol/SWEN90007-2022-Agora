@@ -1,0 +1,98 @@
+@startuml class-diagram-controller
+skinparam classAttributeIconSize 0
+left to right direction
+
+package controller #DDDDDD {
+
+    package utils #DDDDDD {
+        class ListingUtil {
+            + {static} checkCanCreateListing() : boolean
+            + {static} checkCanEditListing(user: User, listing: Listing, response: HttpServletResponse) : boolean
+            + {static} verifyValidFixedPriceListingInputs(request: HttpServletRequest) : boolean
+            + {static} parseHTMLDateTimeLocal(htmlDateTimeLocal: String) : OffsetDateTime
+            + {static} verifyValidAuctionListingInputs(request: HttpServletRequest) : boolean
+            + {static} checkInvalidBasicInputDetails(request: HttpServletRequest) : boolean
+        }
+    }
+
+    ListingUtil <.left. CreateAuctionListingController
+    ListingUtil <.left. CreateFixedListingController
+    ListingUtil <.left. EditListingController
+    AccountDetailController ..|> HttpServlet
+    AllAccountsController ..|> HttpServlet
+    CancelOrderController ..|> HttpServlet
+    CheckoutController ..|> HttpServlet
+    CreateAuctionListingController ..|> HttpServlet
+    CreateFixedListingController ..|> HttpServlet
+    DeactivateAccountController ..|> HttpServlet
+    DeactivateListingController ..|> HttpServlet
+    EditAccountController ..|> HttpServlet
+    EditListingController ..|> HttpServlet
+    EditOrderController ..|> HttpServlet
+    EditPasswordController ..|> HttpServlet
+    HomepageController ..|> HttpServlet
+    LoginController ..|> HttpServlet
+    LogoutController ..|> HttpServlet
+    OrderDetailController ..|> HttpServlet
+    PlaceBidController ..|> HttpServlet
+    PurchasesController ..|> HttpServlet
+    RegisterController ..|> HttpServlet
+    SalesController ..|> HttpServlet
+    ViewListingController ..|> HttpServlet
+    ViewListingsController ..|> HttpServlet
+}
+
+abstract class HttpServlet {
+    ~ doGet(req: HttpServletRequest, resp: HttpServletResponse) : void
+    ~ doPost(req: HttpServletRequest, resp: HttpServletResponse) : void
+}
+
+class AccountDetailController {}
+
+class AllAccountsController {}
+
+class CancelOrderController {}
+
+class CheckoutController {}
+
+class CreateAuctionListingController {}
+
+class CreateFixedListingController {}
+
+class DeactivateAccountController {}
+
+class DeactivateListingController {}
+
+class EditAccountController {}
+
+class EditListingController {
+    - updateFixedPriceListing(request: HttpServletRequest, response: HttpServletResponse, listing: FixedPriceListing, user: StandardUser) : int
+    - updateAuctionListing(request: HttpServletRequest, response: HttpServletResponse, listing: AuctionListing, user: StandardUser) : int
+    - updateCommonListingFields(request: HttpServletRequest, response: HttpServletResponse, listing: AuctionListing, user: StandardUser) : int
+}
+
+class EditOrderController {}
+
+class EditPasswordController {}
+
+class HomepageController {}
+
+class LoginController {}
+
+class LogoutController {}
+
+class OrderDetailController {}
+
+class PlaceBidController {}
+
+class PurchasesController {}
+
+class RegisterController {}
+
+class SalesController {}
+
+class ViewListingController {}
+
+class ViewListingsController {}
+
+@enduml
